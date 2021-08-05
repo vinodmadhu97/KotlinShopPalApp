@@ -4,4 +4,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="CustomTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorThemePink</item>
+        <item name="hintTextColor">@color/colorThemePink</item>
+    </style>
 </resources>

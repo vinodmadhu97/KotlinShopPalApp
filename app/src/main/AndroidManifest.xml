@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShopPal">
-        <activity android:name=".activities.SplashActivity"
+        <activity android:name=".activities.LoginActivity"
             android:theme="@style/MyTheme.MyShopPal.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -17,10 +17,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".activities.MainActivity">
 
         </activity>
+        <activity
+            android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTheme.MyShopPal.NoActionBar">
+
+        </activity>
+        <activity android:name=".activities.MainActivity"></activity>
     </application>
 
 </manifest>
