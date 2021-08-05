@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:orientation="vertical"
     android:background="@drawable/img_splash_background"
-    tools:context=".SplashActivity">
+    tools:context=".activities.SplashActivity">
 
-    <TextView
+    <com.example.myshoppal.utils.MSPTextViewBold
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ShopPal"
-        android:textSize="48dp"
-        android:textColor="@color/white"/>
+        android:textSize="48sp"
+        android:textColor="@color/white"
+        android:text="ShopPal"/>
+
 
 </LinearLayout>
