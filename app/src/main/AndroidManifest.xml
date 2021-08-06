@@ -9,7 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShopPal">
-        <activity android:name=".activities.SignUpActivity"
+        <activity android:name=".activities.BaseActivity"></activity>
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTheme.MyShopPal.NoActionBar"></activity>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTheme.MyShopPal.NoActionBar"></activity>
+        <activity
+            android:name=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyTheme.MyShopPal.NoActionBar">
             <intent-filter>
@@ -18,16 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.LoginActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyTheme.MyShopPal.NoActionBar">
-
-        </activity>
-        <activity
-            android:name=".activities.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyTheme.MyShopPal.NoActionBar"></activity>
         <activity android:name=".activities.MainActivity" />
     </application>
 

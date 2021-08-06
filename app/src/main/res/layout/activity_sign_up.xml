@@ -7,13 +7,12 @@
     android:gravity="center_horizontal"
     tools:context=".activities.SignUpActivity">
 
-    <com.example.myshoppal.utils.MSPTextViewBold
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CREATE AN ACCOUNT"
-        android:layout_marginTop="24dp"
-        android:textSize="18sp"
-        android:textColor="@color/black"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/signup_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"/>
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -95,6 +94,7 @@
             android:id="@+id/cb_term_agree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:checked="false"/>
         <com.example.myshoppal.utils.MSPTextViewRegular
             android:layout_width="wrap_content"
