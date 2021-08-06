@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyShopPal</string>
+    <string name="terms_and_conditions"><u>terms \u0026 Conditions</u></string>
 </resources>
