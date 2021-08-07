@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.myshoppal.R
@@ -125,4 +126,6 @@ class SignUpActivity : BaseActivity() {
             }
         }
     }
+
+
 }
