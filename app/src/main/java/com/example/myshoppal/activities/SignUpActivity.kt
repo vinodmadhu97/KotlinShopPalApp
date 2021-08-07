@@ -63,8 +63,10 @@ class SignUpActivity : BaseActivity() {
                 val email = et_signup_email.text.toString().trim { it <= ' ' }
                 val password = et_signup_password.text.toString().trim { it <= ' ' }
 
+                showProgressDialog("Please Wait")
                 val firebaseAuth = FirebaseAuth.getInstance()
                 firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+                    hideProgressDialog()
                     if (it.isSuccessful){
                         val firebaseUser = it.result!!.user!!
 
@@ -74,6 +76,9 @@ class SignUpActivity : BaseActivity() {
                         showSnackBar("${it.exception!!.message}",true)
                         Log.i("data","${it.exception!!.message}")
                     }
+                }.addOnFailureListener {
+                    hideStatusBar()
+                    showSnackBar(it.message.toString(),true)
                 }
             }
         }
