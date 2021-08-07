@@ -5,9 +5,11 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.myshoppal.R
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
@@ -57,8 +59,22 @@ class SignUpActivity : BaseActivity() {
     private fun registerUser(){
 
         btn_register.setOnClickListener {
-            if (isVerifySIgnUpData()){
-                startActivity(Intent(this@SignUpActivity,MainActivity::class.java))
+            if (true){
+                val email = et_signup_email.text.toString().trim { it <= ' ' }
+                val password = et_signup_password.text.toString().trim { it <= ' ' }
+
+                val firebaseAuth = FirebaseAuth.getInstance()
+                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
+                    if (it.isSuccessful){
+                        val firebaseUser = it.result!!.user!!
+
+                        showSnackBar("success id ${firebaseUser.uid}",false)
+
+                    }else{
+                        showSnackBar("${it.exception!!.message}",true)
+                        Log.i("data","${it.exception!!.message}")
+                    }
+                }
             }
         }
 
