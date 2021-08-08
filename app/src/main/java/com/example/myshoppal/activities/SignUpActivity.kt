@@ -63,7 +63,7 @@ class SignUpActivity : BaseActivity() {
     private fun registerUser(){
 
         btn_register.setOnClickListener {
-            if (true){
+            if (isVerifySIgnUpData()){
                 val email = et_signup_email.text.toString().trim { it <= ' ' }
                 val password = et_signup_password.text.toString().trim { it <= ' ' }
                 val fName = et_signup_fName.text.toString().trim { it <= ' ' }

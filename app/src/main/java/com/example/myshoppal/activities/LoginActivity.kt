@@ -5,10 +5,13 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.myshoppal.R
+import com.example.myshoppal.firestore.FireStoreClass
+import com.example.myshoppal.models.User
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -66,7 +69,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 hideProgressDialog()
                 if (it.isSuccessful){
                     //TODO login to main
-                    showSnackBar("login success ${it.result!!.user!!.uid}",false)
+                        FireStoreClass().getUserDetails(this)
+
                 }else{
                     showSnackBar("login failed }",true)
                 }
@@ -91,5 +95,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 true
             }
         }
+    }
+
+    fun userLoggedInSuccess(user: User){
+        hideProgressDialog()
+
+        Log.i("data",user.firstName)
+        Log.i("data",user.lastName)
+        Log.i("data",user.email)
+
+        startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+        finish()
     }
 }
