@@ -9,7 +9,10 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import com.example.myshoppal.R
+import com.example.myshoppal.firestore.FireStoreClass
+import com.example.myshoppal.models.User
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -63,24 +66,35 @@ class SignUpActivity : BaseActivity() {
             if (true){
                 val email = et_signup_email.text.toString().trim { it <= ' ' }
                 val password = et_signup_password.text.toString().trim { it <= ' ' }
+                val fName = et_signup_fName.text.toString().trim { it <= ' ' }
+                val lName = et_signup_lName.text.toString().trim { it <= ' ' }
+
 
                 showProgressDialog("Please Wait")
                 val firebaseAuth = FirebaseAuth.getInstance()
                 firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
-                    hideProgressDialog()
+
                     if (it.isSuccessful){
                         val firebaseUser = it.result!!.user!!
+                        val user = User(
+                            firebaseUser.uid,
+                            fName,
+                            lName,
+                            email
+                        )
 
-                        showSnackBar("success id ${firebaseUser.uid}",false)
+                        FireStoreClass().registerUser(this,user)
 
                     }else{
-                        showSnackBar("${it.exception!!.message}",true)
+                        hideProgressDialog()
                         Log.i("data","${it.exception!!.message}")
                     }
                 }.addOnFailureListener {
                     hideStatusBar()
                     showSnackBar(it.message.toString(),true)
                 }
+            }else{
+                hideProgressDialog()
             }
         }
 
@@ -125,6 +139,12 @@ class SignUpActivity : BaseActivity() {
                 true
             }
         }
+    }
+
+
+    fun userRegistrationSuccessFull(){
+        hideProgressDialog()
+        Toast.makeText(this@SignUpActivity,"Registration success",Toast.LENGTH_LONG).show()
     }
 
 
