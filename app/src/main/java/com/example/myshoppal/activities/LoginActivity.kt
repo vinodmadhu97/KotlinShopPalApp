@@ -68,7 +68,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
                 hideProgressDialog()
                 if (it.isSuccessful){
-                    //TODO login to main
+
                         FireStoreClass().getUserDetails(this)
 
                 }else{

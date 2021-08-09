@@ -85,6 +85,7 @@ class SignUpActivity : BaseActivity() {
 
                         FireStoreClass().registerUser(this,user)
 
+
                     }else{
                         hideProgressDialog()
                         Log.i("data","${it.exception!!.message}")
@@ -135,7 +136,7 @@ class SignUpActivity : BaseActivity() {
             }
 
             else -> {
-                showSnackBar("login success",false)
+
                 true
             }
         }
@@ -144,7 +145,11 @@ class SignUpActivity : BaseActivity() {
 
     fun userRegistrationSuccessFull(){
         hideProgressDialog()
-        Toast.makeText(this@SignUpActivity,"Registration success",Toast.LENGTH_LONG).show()
+        Toast.makeText(this,"Registration success",Toast.LENGTH_LONG).show()
+        finish()
+        val intent = Intent(this,MainActivity::class.java)
+        
+        startActivity(intent)
     }
 
 
