@@ -46,9 +46,10 @@ class FireStoreClass {
                 //SHARED PREFERENCES
                 val sharedPreferences = activity.getSharedPreferences(Constants.MYSHOPPAL_PREFERENCES,Context.MODE_PRIVATE)
                 val editor : SharedPreferences.Editor = sharedPreferences.edit()
-                editor.apply()
 
                 editor.putString(Constants.LOGGED_IN_USERNAME,"${user.firstName} ${user.lastName}")
+                editor.apply()
+
                 when(activity){
                     is LoginActivity ->{
                         activity.userLoggedInSuccess(user)

@@ -9,10 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShopPal">
-        <activity android:name=".activities.ForgotPasswordActivity"
+        <activity android:name=".activities.UserProfileActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyTheme.MyShopPal.NoActionBar"
-            >
+            android:theme="@style/MyTheme.MyShopPal.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".activities.ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyTheme.MyShopPal.NoActionBar">
 
         </activity>
         <activity android:name=".activities.BaseActivity" />

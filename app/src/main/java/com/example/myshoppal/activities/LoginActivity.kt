@@ -98,13 +98,20 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun userLoggedInSuccess(user: User){
+
         hideProgressDialog()
 
         Log.i("data",user.firstName)
         Log.i("data",user.lastName)
         Log.i("data",user.email)
 
-        startActivity(Intent(this@LoginActivity,MainActivity::class.java))
-        finish()
+        if (user.isProfileCompleted == 0){
+            startActivity(Intent(this@LoginActivity,UserProfileActivity::class.java))
+            finish()
+        }else{
+            startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+            finish()
+        }
+
     }
 }

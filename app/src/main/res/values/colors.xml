@@ -20,5 +20,7 @@
     <color name="colorSnackBarSuccess">#8bc34a</color>
     <color name="colorSnackBarError">#f72400</color>
 
+    <color name="lightGray">#f1f1f1</color>
+
 
 </resources>
