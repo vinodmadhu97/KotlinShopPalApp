@@ -12,6 +12,7 @@ import android.view.WindowManager
 import com.example.myshoppal.R
 import com.example.myshoppal.firestore.FireStoreClass
 import com.example.myshoppal.models.User
+import com.example.myshoppal.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -106,7 +107,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         Log.i("data",user.email)
 
         if (user.isProfileCompleted == 0){
-            startActivity(Intent(this@LoginActivity,UserProfileActivity::class.java))
+            val intent = Intent(this@LoginActivity,UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+            startActivity(intent)
             finish()
         }else{
             startActivity(Intent(this@LoginActivity,MainActivity::class.java))
