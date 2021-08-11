@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import com.example.myshoppal.R
 import com.example.myshoppal.models.User
 import com.example.myshoppal.utils.Constants
+import com.example.myshoppal.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
 import java.util.jar.Manifest
@@ -105,7 +106,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 if (data != null){
                     try {
                         val selectedImageUri :Uri = data.data!!
-                        iv_profile_pic.setImageURI(selectedImageUri)
+                        GlideLoader(this).loadUserPicture(selectedImageUri,iv_profile_pic)
                     }catch (e:IOException){
                         e.printStackTrace()
                         Toast.makeText(this,"image loading failed",Toast.LENGTH_LONG).show()
