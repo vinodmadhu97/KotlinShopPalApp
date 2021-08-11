@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -44,6 +45,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         et_profile_Email.setText(user.email)
 
         iv_profile_pic.setOnClickListener(this)
+        btn_profile_save.setOnClickListener(this)
 
     }
 
@@ -64,6 +66,12 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             when(v.id){
                 R.id.iv_profile_pic ->{
                     checkPermissions()
+                }
+
+                R.id.btn_profile_save ->{
+                    if (isValidatedData()){
+                        showSnackBar("ok",false)
+                    }
                 }
             }
         }
@@ -115,6 +123,16 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
                 }
             }
+        }
+    }
+
+    private fun isValidatedData() : Boolean{
+        return when{
+            TextUtils.isEmpty(et_profile_phone.text.toString().trim { it<=' ' }) ->{
+                showSnackBar("invalid phone number",true)
+                false
+            }
+            else -> true
         }
     }
 }
