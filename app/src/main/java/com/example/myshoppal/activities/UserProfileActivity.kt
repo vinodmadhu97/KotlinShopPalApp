@@ -1,18 +1,23 @@
 package com.example.myshoppal.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.myshoppal.R
 import com.example.myshoppal.models.User
 import com.example.myshoppal.utils.Constants
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import java.io.IOException
 import java.util.jar.Manifest
 
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
@@ -66,7 +71,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     private fun checkPermissions(){
         if (ContextCompat.checkSelfPermission(
                 this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            showSnackBar("already permission granted",false)
+            Constants.showImageChooser(this)
         }else{
             ActivityCompat.requestPermissions(
                 this,
@@ -85,11 +90,30 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE){
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
-                showSnackBar("storage permission granted",false)
+                Constants.showImageChooser(this)
             }else{
                 showSnackBar("storage permission denited",true)
             }
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            if (requestCode == Constants.PICK_IMAGE_REQUEST_CODE){
+                if (data != null){
+                    try {
+                        val selectedImageUri :Uri = data.data!!
+                        iv_profile_pic.setImageURI(selectedImageUri)
+                    }catch (e:IOException){
+                        e.printStackTrace()
+                        Toast.makeText(this,"image loading failed",Toast.LENGTH_LONG).show()
+                    }
+
+
+                }
+            }
+        }
     }
 }
