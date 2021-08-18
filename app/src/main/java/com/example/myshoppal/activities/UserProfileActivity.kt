@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.myshoppal.R
+import com.example.myshoppal.firestore.FireStoreClass
 import com.example.myshoppal.models.User
 import com.example.myshoppal.utils.Constants
 import com.example.myshoppal.utils.GlideLoader
@@ -23,13 +24,17 @@ import java.io.IOException
 import java.util.jar.Manifest
 
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
+    private lateinit var user: User
+    private var mSelectedUri :Uri? = null
+    private var mUserProfileImageUrl:String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
         hideStatusBar()
 
-        var user = User()
+        user = User()
 
         if (intent.hasExtra(Constants.EXTRA_USER_DETAILS)){
             user = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
@@ -69,9 +74,14 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 R.id.btn_profile_save ->{
-                    if (isValidatedData()){
-                        showSnackBar("ok",false)
+                    showProgressDialog("Please wait!")
+                    if (mSelectedUri != null){
+                        FireStoreClass().uploadImageToCloudStorage(this,mSelectedUri!!)
+                    }else{
+                        uploadUserProfileDetails()
                     }
+
+
                 }
             }
         }
@@ -113,8 +123,9 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             if (requestCode == Constants.PICK_IMAGE_REQUEST_CODE){
                 if (data != null){
                     try {
-                        val selectedImageUri :Uri = data.data!!
-                        GlideLoader(this).loadUserPicture(selectedImageUri,iv_profile_pic)
+                        mSelectedUri  = data.data!!
+                        GlideLoader(this)
+                            .loadUserPicture(mSelectedUri!!,iv_profile_pic)
                     }catch (e:IOException){
                         e.printStackTrace()
                         Toast.makeText(this,"image loading failed",Toast.LENGTH_LONG).show()
@@ -126,13 +137,52 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun isValidatedData() : Boolean{
-        return when{
-            TextUtils.isEmpty(et_profile_phone.text.toString().trim { it<=' ' }) ->{
-                showSnackBar("invalid phone number",true)
-                false
-            }
-            else -> true
+
+
+    fun userprofileUpdateActivitySuccess(){
+        hideProgressDialog()
+        Toast.makeText(this,"profile updated",Toast.LENGTH_LONG).show()
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
+    }
+    fun userprofileUpdateActivityFailed(){
+        hideProgressDialog()
+        Toast.makeText(this,"something went wrong",Toast.LENGTH_LONG).show()
+
+    }
+
+    fun userprofileUpLoadActivitySuccess(url:String){
+        mUserProfileImageUrl = url
+        uploadUserProfileDetails()
+    }
+
+    private fun uploadUserProfileDetails(){
+
+        var userMap = HashMap<String,Any>()
+
+        val mobileNo = et_profile_phone.text.toString().trim { it<= ' ' }
+        val gender = if (radio_male.isChecked){
+            Constants.MALE
+        }else{
+            Constants.FEMALE
         }
+        userMap[Constants.GENDER] = gender
+
+        if (mobileNo.isNotEmpty()){
+            userMap[Constants.PHONE] = mobileNo.toLong()
+        }
+
+        if (mUserProfileImageUrl.isNotEmpty()){
+            userMap[Constants.IMAGE] = mUserProfileImageUrl
+        }
+
+        if (mobileNo.isNotEmpty() && gender.isNotEmpty() && mUserProfileImageUrl.isNotEmpty()){
+            userMap[Constants.PROFILE_COMPLETED] = 1
+        }
+
+
+        FireStoreClass().updateUserProfileData(this,userMap)
+
+
     }
 }

@@ -3,15 +3,20 @@ package com.example.myshoppal.firestore
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.util.Log
 import android.view.Display
+import android.widget.Toast
 import com.example.myshoppal.activities.LoginActivity
 import com.example.myshoppal.activities.SignUpActivity
+import com.example.myshoppal.activities.UserProfileActivity
 import com.example.myshoppal.models.User
 import com.example.myshoppal.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 
 class FireStoreClass {
@@ -56,5 +61,50 @@ class FireStoreClass {
                     }
                 }
             }
+    }
+
+    fun updateUserProfileData(activity:Activity, userMap:HashMap<String,Any>){
+
+        mFireStore.collection(Constants.USERS).document(getCurrentUserId()).update(userMap).addOnSuccessListener {
+            when(activity){
+                is UserProfileActivity ->{
+                    activity.userprofileUpdateActivitySuccess()
+                }
+            }
+        }.addOnFailureListener {
+            when(activity){
+                is UserProfileActivity ->{
+                    activity.userprofileUpdateActivityFailed()
+                }
+            }
+        }
+
+    }
+
+    fun uploadImageToCloudStorage(activity: Activity,uri : Uri){
+        var sRef :StorageReference = FirebaseStorage.getInstance().reference.child(
+            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis()
+        )
+
+        sRef.putFile(uri).addOnSuccessListener {
+            Log.i("data",it.metadata!!.reference!!.downloadUrl.toString())
+
+            it.metadata!!.reference!!.downloadUrl.addOnSuccessListener {savedPath->
+
+                Log.i("data",savedPath.toString())
+                when(activity){
+                    is UserProfileActivity ->{
+                        activity.userprofileUpLoadActivitySuccess(savedPath.toString())
+                    }
+                }
+            }
+        }.addOnFailureListener {
+            when(activity){
+                is UserProfileActivity ->{
+                    activity.hideProgressDialog()
+                }
+            }
+
+        }
     }
 }
