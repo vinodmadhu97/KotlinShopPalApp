@@ -10,6 +10,7 @@ import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.myshoppal.R
+import com.example.myshoppal.firestore.FireStoreClass
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
@@ -39,11 +40,17 @@ class SplashActivity : AppCompatActivity() {
         /*Handler().postDelayed({
             startActivity(Intent(this@SplashActivity,MainActivity::class.java))
         },2000)*/
-
+        val currentUser = FireStoreClass().getCurrentUserId()
         // NEW WAY
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-            finish()
+            if (currentUser.isNotEmpty()){
+                startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
+                finish()
+            }else{
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                finish()
+            }
+
         }, 2000)
     }
 

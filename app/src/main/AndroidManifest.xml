@@ -11,9 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyShopPal">
+        <activity android:name=".activities.SettingsActivity"></activity>
         <activity
             android:name=".activities.DashBoardActivity"
-            android:label="@string/title_activity_dash_board"></activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activities.UserProfileActivity"
             android:screenOrientation="portrait"
