@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
         val currentUser = FireStoreClass().getCurrentUserId()
         // NEW WAY
         Handler(Looper.getMainLooper()).postDelayed({
-            if (currentUser.isNotEmpty()){
+            if (currentUser.isNotEmpty() || currentUser == null){
                 startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
                 finish()
             }else{

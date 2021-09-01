@@ -21,6 +21,7 @@
     <color name="colorSnackBarError">#f72400</color>
 
     <color name="lightGray">#f1f1f1</color>
+    <color name="color_imageView_background">#e1e1e1</color>
 
 
 </resources>

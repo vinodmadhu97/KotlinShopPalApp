@@ -7,9 +7,8 @@ import android.net.Uri
 import android.util.Log
 import android.view.Display
 import android.widget.Toast
-import com.example.myshoppal.activities.LoginActivity
-import com.example.myshoppal.activities.SignUpActivity
-import com.example.myshoppal.activities.UserProfileActivity
+import com.example.myshoppal.activities.*
+import com.example.myshoppal.models.Product
 import com.example.myshoppal.models.User
 import com.example.myshoppal.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -59,6 +58,20 @@ class FireStoreClass {
                     is LoginActivity ->{
                         activity.userLoggedInSuccess(user)
                     }
+                    is SettingsActivity ->{
+                        activity.profileDetailsSuccess(user)
+                    }
+                }
+            }.addOnFailureListener{
+                when(activity){
+                    is LoginActivity ->{
+                        activity.hideProgressDialog()
+                        Toast.makeText(activity,"Something went wrong",Toast.LENGTH_LONG).show()
+                    }
+                    is SettingsActivity ->{
+                        activity.hideProgressDialog()
+                        Toast.makeText(activity,"Something went wrong",Toast.LENGTH_LONG).show()
+                    }
                 }
             }
     }
@@ -81,9 +94,9 @@ class FireStoreClass {
 
     }
 
-    fun uploadImageToCloudStorage(activity: Activity,uri : Uri){
+    fun uploadImageToCloudStorage(activity: Activity,uri : Uri, imgType : String){
         var sRef :StorageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis()
+            imgType + System.currentTimeMillis()
         )
 
         sRef.putFile(uri).addOnSuccessListener {
@@ -96,6 +109,9 @@ class FireStoreClass {
                     is UserProfileActivity ->{
                         activity.userprofileUpLoadActivitySuccess(savedPath.toString())
                     }
+                    is AddProductActivity ->{
+                        activity.imageUploadSuccess(savedPath.toString())
+                    }
                 }
             }
         }.addOnFailureListener {
@@ -106,5 +122,30 @@ class FireStoreClass {
             }
 
         }
+    }
+
+    fun signOutUser(){
+        FirebaseAuth.getInstance().signOut()
+    }
+
+    fun uploadProductDetails(activity:Activity, productInfo: Product){
+        mFireStore.collection(Constants.PRODUCT).document().set(productInfo, SetOptions.merge())
+            .addOnSuccessListener {
+            when(activity){
+                is AddProductActivity ->{
+                    activity.productUploadSuccess()
+                }
+            }
+        }
+            .addOnFailureListener {
+                when(activity){
+                    is AddProductActivity ->{
+                        activity.hideProgressDialog()
+                        Log.i("data","prouduct details upload failed")
+                    }
+                }
+
+
+            }
     }
 }

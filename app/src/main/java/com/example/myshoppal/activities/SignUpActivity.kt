@@ -147,7 +147,7 @@ class SignUpActivity : BaseActivity() {
         hideProgressDialog()
         Toast.makeText(this,"Registration success",Toast.LENGTH_LONG).show()
         finish()
-        val intent = Intent(this,MainActivity::class.java)
+        val intent = Intent(this,DashBoardActivity::class.java)
         
         startActivity(intent)
     }

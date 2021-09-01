@@ -33,6 +33,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_user_profile)
 
         hideStatusBar()
+        setupToolBar()
 
         user = User()
 
@@ -65,6 +66,18 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             )
         }
     }
+    private fun setupToolBar(){
+        setSupportActionBar(userProfileToolbar)
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_24)
+        }
+
+        userProfileToolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+    }
 
     override fun onClick(v: View?) {
         if (v != null){
@@ -76,7 +89,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 R.id.btn_profile_save ->{
                     showProgressDialog("Please wait!")
                     if (mSelectedUri != null){
-                        FireStoreClass().uploadImageToCloudStorage(this,mSelectedUri!!)
+                        FireStoreClass().uploadImageToCloudStorage(this,mSelectedUri!!,Constants.USER_PROFILE_IMAGE)
                     }else{
                         uploadUserProfileDetails()
                     }
@@ -142,7 +155,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     fun userprofileUpdateActivitySuccess(){
         hideProgressDialog()
         Toast.makeText(this,"profile updated",Toast.LENGTH_LONG).show()
-        startActivity(Intent(this,MainActivity::class.java))
+        startActivity(Intent(this,DashBoardActivity::class.java))
         finish()
     }
     fun userprofileUpdateActivityFailed(){
