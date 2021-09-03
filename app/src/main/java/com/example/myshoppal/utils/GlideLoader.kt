@@ -16,4 +16,13 @@ class GlideLoader(val context:Context) {
             .placeholder(R.drawable.ic_user_placeholder)
             .into(imageView)
     }
+
+    fun loadProductPicture(imageUri: Uri,imageView:ImageView){
+        Glide
+            .with(context)
+            .load(imageUri)
+            .centerCrop()
+            .placeholder(R.drawable.ic_user_placeholder)
+            .into(imageView)
+    }
 }

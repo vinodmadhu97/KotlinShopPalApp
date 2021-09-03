@@ -2,6 +2,7 @@ package com.example.myshoppal.activities
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
@@ -11,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.myshoppal.models.Product
 
 class DashBoardActivity : BaseActivity() {
 
@@ -53,4 +55,6 @@ class DashBoardActivity : BaseActivity() {
     override fun onBackPressed() {
         doubleClickToBack()
     }
+
+
 }

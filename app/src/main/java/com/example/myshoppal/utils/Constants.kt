@@ -25,6 +25,8 @@ object Constants {
     const val PROFILE_COMPLETED = "profileCompleted"
     const val USER_PROFILE_IMAGE = "user_profile_image"
     const val PRODUCT_IMAGE = "product_image"
+    const val USER_ID = "userId"
+
 
     fun showImageChooser(activity: Activity){
         val galleyIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -34,8 +36,8 @@ object Constants {
 
     fun getFileExtension(activity:Activity, uri : Uri) :String{
 
-
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(activity.contentResolver.getType(uri))!!
+
     }
 
 }

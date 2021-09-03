@@ -1,13 +1,17 @@
 package com.example.myshoppal.firestore
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.view.Display
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.myshoppal.activities.*
+import com.example.myshoppal.fragments.DashboardFragment
+import com.example.myshoppal.fragments.ProductsFragment
 import com.example.myshoppal.models.Product
 import com.example.myshoppal.models.User
 import com.example.myshoppal.utils.Constants
@@ -148,4 +152,55 @@ class FireStoreClass {
 
             }
     }
+
+    fun getProductList(fragment : Fragment){
+        mFireStore.collection(Constants.PRODUCT).whereEqualTo(Constants.USER_ID,getCurrentUserId())
+            .get().addOnSuccessListener { document ->
+                Log.i("data",document.documents.toString())
+                val dataList = ArrayList<Product>()
+
+                for (i in document.documents){
+
+                    var product = i.toObject(Product::class.java)
+                    product!!.productId = i.id
+
+                    dataList.add(product)
+                }
+
+                when(fragment){
+                    is ProductsFragment ->{
+                        fragment.successProductListFromFireStore(dataList)
+                    }
+                }
+
+            }
+    }
+
+    fun getDashboardItemsList(fragment: DashboardFragment){
+        mFireStore.collection(Constants.PRODUCT).get().addOnSuccessListener { document->
+            Log.i("data","dashboard data ${document.documents.toString()}")
+
+            val productList = ArrayList<Product>()
+            for (i in document.documents){
+                val product = i.toObject(Product::class.java)
+                product!!.productId = i.id
+                productList.add(product!!)
+            }
+            fragment.successDashboardItemList(productList)
+        }.addOnFailureListener {
+            fragment.hideProgressDialog()
+            Log.i("data","dashboard data loading error")
+        }
+    }
+
+    fun deleteProductItem(fragment:ProductsFragment,productId : String){
+        mFireStore.collection(Constants.PRODUCT).document(productId).delete().addOnSuccessListener {
+            fragment.productDeleteSuccess()
+        }.addOnFailureListener {
+            fragment.hideProgressDialog()
+            Log.i("data"," data deleting error")
+        }
+    }
+
+
 }
